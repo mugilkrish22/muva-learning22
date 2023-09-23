@@ -1,0 +1,390 @@
+<!--codewithcurious.com-->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+
+  <style>
+    body{
+      background: greenyellow;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      justify-content: center;
+     
+      
+    }
+    #question-text {
+ font-size: 70px;
+}
+   
+    .quiz-container h1{
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin-right: 100px;
+    
+     
+      font-size: 150px;
+     
+    }
+    button {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 60px;
+     
+      width: 500px;
+            height: 200px;
+            border-radius: 50px;
+   
+    
+      
+      background-color: rgba(10, 75, 253, 0.733);
+      margin-top:200px ;
+     
+      color: rgb(238, 195, 2);
+
+    }
+    button :hover{
+      background-color: hotpink;
+    }
+    #question-container {
+  margin-bottom: 20px;
+}
+#question-text {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+#answer-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 30px;
+}
+#timer-container {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  margin-top: 300px;
+  font-size: 282px;
+}
+
+#timer-text {
+  font-size: 200px;
+}
+#question-text {
+  font-size: 108px;
+  margin-bottom: 10px;
+}
+
+#timer {
+  font-weight: bold;
+  margin-left: 5px;
+  font-size: 500;
+}
+h2{
+  font-size: 100px;
+}
+h3{
+  font-size: 80px;
+}
+h4{
+  font-size: 50px;
+}
+
+
+
+
+
+    
+
+
+  </style>
+</head>
+<body>
+  
+  <div class="quiz-container">
+    <h1>Quiz </h1>
+    <br><br>
+   
+    <div id="question-container">
+      <p id="question-text"></p>
+      <div id="answer-buttons"></div>
+    </div>
+    <div id="controls-container">
+     <button id="start-button">Start</button>
+      <div id="timer-container">
+        <span id="timer-text"><span id="timer"></span></span>
+      </div>
+    </div>
+  </div>
+  <script>
+
+    //codewithcurious.com
+
+
+
+// Define an array of quiz questions
+const quizQuestions = [
+
+{
+    question: "1. 2, 2, 4, 12, 48, 240, ?",
+    options: ["347","567","1009","1440",],
+    correctAnswer: "1440"
+  },
+  {
+    question: "2. 3 2 2 5 5 5 7 8 8 9 11 11 ?",
+    options: ["11","12","13","15",],
+    correctAnswer: "11"
+  },
+  {
+    question: "3. 1 3 2 6 3 11 4 18 5 ?",
+    options: ["20","25","27","29",],
+    correctAnswer: "27"
+  },
+  {
+    question: "4. 13 17 23 29 31 37 ?",
+    options: ["39","41","49","55",],
+    correctAnswer: "41"
+  },
+  {
+    question: "5. 17 16 14 12 11 8 8 ?",
+    options: ["None of the above","11","3","4",],
+    correctAnswer: "4"
+  },
+  {
+    question: "6. 9 11 13 ?",
+    options: ["None of the above","14","16","17",],
+    correctAnswer: "None of the above"
+  },
+  {
+    question: "7. 5, 6, 9, 14, 21, ?",
+    options: ["None of the above ","30","31","36",],
+    correctAnswer: "30"
+  },
+  {
+    question: "8. 40, 30, 22, 16, ?",
+    options: ["12","10","14","30",],
+    correctAnswer: "12"
+  },
+  {
+    question: "9. 1, 3, 6, 11, 18, ?",
+    options: ["20","24","25","29",],
+    correctAnswer: "29"
+  },
+  {
+    question: "10. 32, 19, 8, ?",
+    options: ["1","3","5","10",],
+    correctAnswer: "1"
+  },{
+    question: "11. 1, 3, 9, 27, 81, ?",
+    options: ["216","243","250","none of the above",],
+    correctAnswer: "243"
+  },
+  {
+    question: "12. 1, 2, 6, 15, 31, ?",
+    options: ["44","56","60","none of the above",],
+    correctAnswer: "56"
+  },
+  {
+    question: "13. 71, 55, 46, 42, ?",
+    options: ["41","40","39","60",],
+    correctAnswer: "41"
+  },
+  {
+    question: "14.1, 2, 10, 37, 101, ?",
+    options: ["402","206","226","178",],
+    correctAnswer: "226"
+  },
+  {
+    question: "15. 225, 100, 36, 9, 1, ?",
+    options: ["306","344","405","406",],
+    correctAnswer: "405"
+  },
+  {
+    question: "Which protocol provides an email facility among the hosts",
+    options: ["POP"," SMTP","IMAP"," MIME",],
+    correctAnswer: "SMTP"
+  },
+  {
+    question: " A light-sensitive device that digitizes printed texts, drawings, or photos is referred to as:",
+    options: ["Joystick","Printer","Scanner","OCR",],
+    correctAnswer: "Scanner"
+  },
+  {
+    question: " Sir Thomas Roe came to Jahanger court in which year",
+    options: ["1601","1605","1609","1615",],
+    correctAnswer:" 1615"
+  },
+ 
+  
+  {
+    question: " The principle of dyarchy was introduced in India by British government through which act",
+    options: ["Indian Councils Act, 1909"," Government of India Act, 1919","Indian Councils Act, 1892","Indian Councils Act, 1861",],
+    correctAnswer: "Government of India Act, 1919"
+  },
+  {
+    question: "Congress is in reality a Civil war without arms Who among the following made the above remarks in regard to Congress",
+    options: ["Lord Dufferin"," Mohammad Ali Jinnah","Syed Ahmad Khan","Lord Curzon",],
+    correctAnswer: "Syed Ahmad Khan"
+  },
+  {
+    question: "Which British officer suppressed the Revolt of 1857 in Lucknow and Bareilly",
+    options: [" Colin Campbell"," Nicholson"," Major Willian Taylor","Colonel Neill",],
+    correctAnswer: "Colin Campbell"
+  },
+  {
+    question: "which of the following are not prime numbers",
+    options: ["191",", 241","337","391",],
+    correctAnswer: "391"
+  },
+  {
+    question: "The least prime number is",
+    options: ["0","1","2","3","4",],
+    correctAnswer: "2"
+  },
+  {
+    question: "Which one of the following is a prime number",
+    options: ["161","221","373","437","222",],
+    correctAnswer: "373"
+  },
+  {
+    question: "The sum of first 45 natural number is",
+    options: ["2070","1035","1280","2140","1111",],
+    correctAnswer: "1035"
+  },
+  {
+    question: "which of the following number is exactly divisible by 99",
+    options: ["11435","135792","3455","876","555",],
+    correctAnswer: "11434"
+  },
+  {
+    question: "What largest number of five digits is divisible by 99",
+    options: ["99999","99981","999909","99990","99099",],
+    correctAnswer: "99990"
+  },
+  {
+    question: "what smallest number of six digits is divisible by 111",
+    options: ["111111","110011","100011","77","788",],
+    correctAnswer: "100011"
+  },
+  {
+    question: "The sum of two value 15 and 20",
+    options: ["35","55","44","66","99",],
+    correctAnswer: "35"
+  },
+  {
+    question: "Brain of computer is",
+    options: ["cpu","mouse","keyboard ","moniter","ups",],
+    correctAnswer: "cpu"
+  },
+  {
+    question: "smallest state od india",
+    options: ["goa","sikkim","TN","Delhi","kerala",],
+    correctAnswer: "goa"
+  },
+ 
+  
+  
+];
+
+// Variables to track quiz state
+let currentQuestionIndex = 0;
+let score = 0;
+let timeLeft = 2000;
+let timerInterval;
+
+// Function to start the quiz
+function startQuiz() {
+  // Hide the start button and display the first question
+  document.getElementById("start-button").style.display = "none";
+  displayQuestion();
+  startTimer();
+}
+
+// Function to display a question and its options
+function displayQuestion() {
+  const currentQuestion = quizQuestions[currentQuestionIndex];
+  const questionText = document.getElementById("question-text");
+  const answerButtons = document.getElementById("answer-buttons");
+
+  // Clear previous question and answer options
+  questionText.innerHTML = "";
+  answerButtons.innerHTML = "";
+
+  // Display the current question
+  questionText.innerHTML = currentQuestion.question;
+
+  // Create answer buttons for each option
+  currentQuestion.options.forEach(option => {
+    const button = document.createElement("button");
+    button.innerText = option;
+    button.classList.add("answer-button");
+    answerButtons.appendChild(button);
+
+    // Add click event listener to check the answer
+    button.addEventListener("click", function() {
+      checkAnswer(option);
+    });
+  });
+}
+
+// Function to check the selected answer
+function checkAnswer(selectedOption) {
+  const currentQuestion = quizQuestions[currentQuestionIndex];
+
+  // Check if the selected answer is correct
+  if (selectedOption === currentQuestion.correctAnswer) {
+    score++;
+  }
+
+  // Move to the next question or end the quiz if all questions are answered
+  currentQuestionIndex++;
+
+  if (currentQuestionIndex < quizQuestions.length) {
+    displayQuestion();
+  } else {
+    endQuiz();
+  }
+}
+
+// Function to start the timer
+function startTimer() {
+  timerInterval = setInterval(function() {
+    timeLeft--;
+
+    // Update the timer text
+    document.getElementById("timer").textContent = timeLeft;
+
+    // End the quiz if time runs out
+    if (timeLeft <= 0) {
+      endQuiz();
+    }
+  }, 1000);
+}
+
+// Function to end the quiz
+function endQuiz() {
+  // Stop the timer
+  clearInterval(timerInterval);
+
+  // Calculate the score percentage
+  const scorePercentage = (score / quizQuestions.length) * 100;
+
+  // Display the final score
+  const questionContainer = document.getElementById("question-container");
+  questionContainer.innerHTML = `
+    <h2>Completed</h2>
+    <h3> <p>Your Score: ${score} out of ${quizQuestions.length}</p>
+    <p>Score Percentage: ${scorePercentage}%</p></h3>
+  `;
+}
+
+// Add event listener to start the quiz when the start button is clicked
+document.getElementById("start-button").addEventListener("click", startQuiz);
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!--codewithcurious.com-->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+
+  <style>
+    body{
+      background: greenyellow;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      justify-content: center;
+     
+      
+    }
+    #question-text {
+ font-size: 70px;
+}
+   
+    .quiz-container h1{
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    
+      padding-right: 00px;
+      font-size: 200px;
+     
+    }
+    button {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 110px;
+      width: 620px;
+            height: 500px;
+            border-radius: 50px;
+   
+    
+      
+      background-color: rgba(10, 75, 253, 0.733);
+      margin-top:200px ;
+     
+      color: rgb(238, 195, 2);
+
+    }
+    button :hover{
+      background-color: hotpink;
+    }
+    #question-container {
+  margin-bottom: 20px;
+}
+#question-text {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+#answer-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+}
+#timer-container {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  margin-top: 300px;
+  font-size: 282px;
+}
+
+#timer-text {
+  font-size: 200px;
+}
+#question-text {
+  font-size: 108px;
+  margin-bottom: 10px;
+}
+
+#timer {
+  font-weight: bold;
+  margin-left: 5px;
+  font-size: 500;
+}
+h2{
+  font-size: 100px;
+}
+h3{
+  font-size: 80px;
+}
+h4{
+  font-size: 50px;
+}
+
+
+
+
+    
+
+
+  </style>
+</head>
+<body>
+  
+  <div class="quiz-container">
+    <h1>Quiz </h1>
+    <br><br>
+   
+    <div id="question-container">
+      <p id="question-text"></p>
+      <div id="answer-buttons"></div>
+    </div>
+    <div id="controls-container">
+     <button id="start-button">Start</button>
+      <div id="timer-container">
+        <span id="timer-text"><span id="timer"></span></span>
+      </div>
+    </div>
+  </div>
+  <script>
+
+    //codewithcurious.com
+
+
+
+// Define an array of quiz questions
+const quizQuestions = [
+{
+    question: "If A: B = 2: 3, B: C = 6: 11 then what is the value of C: B: A?",
+    options: ["11: 6: 2","22: 6: 4"," 11: 3: 2","11: 6: 4",],
+    correctAnswer: "11: 6: 4"
+  },
+   {
+    question: " A and B can together complete a task 40 days. They worked together for 30 days and then left. A finished the remaining task in next 22 days. In how many days A alone can finish the task?",
+    options: ["88 days" ,"48 days" ,"30 days", "40 days"],
+    correctAnswer: "88 days "
+  },
+  {
+    question: " What is the PH of H2O?",
+    options: ["6","7","8","9",],
+    correctAnswer: "7"
+  },
+  {
+    question: " Which of the following gas is reduced in the reduction process?",
+    options: ["Oxygen","Helium","Carbon","Hydrogen",],
+    correctAnswer: "Hydrogen"
+  },
+  {
+    question: "The resources of ownership are:",
+    options: ["plantation","pasture land","ponds","All of these",],
+    correctAnswer: "All of these"
+  },
+  
+    
+  {
+    question: "Plots, houses and other property come under:",
+    options: ["individual resources"," community owned resources"," national resources","abiotic resources",],
+    correctAnswer: " individual resources"
+  },
+  {
+    question: "  individual resources",
+    options: ["1ev","6ev","0ev"," none of the above",],
+    correctAnswer: "1ev"
+  },
+  {
+    question: "What type of waves are light wave?",
+    options: ["transverse wave","longitudional wave","boath a & b","none",],
+    correctAnswer: "transverse wave"
+  },
+  {
+    question: "Find the value of 4 × {44 + (84 + 18 ÷ 3 × 3 - 40)}:",
+    options: ["420","330","250","none of the above",],
+    correctAnswer: "420"
+  },
+  {
+    question: "A shopkeeper earns a profit of 25 percent on selling a radio at 15 percent discount on the Printed price. Finds the ratio of the Printed price and the cost price of the radio.",
+    options: ["17:25","25:27","27:25","25:17","none",],
+    correctAnswer: "25:17"
+ },
+ 
+  
+];
+
+// Variables to track quiz state
+let currentQuestionIndex = 0;
+let score = 0;
+let timeLeft = 360;
+let timerInterval;
+
+// Function to start the quiz
+function startQuiz() {
+  // Hide the start button and display the first question
+  document.getElementById("start-button").style.display = "none";
+  displayQuestion();
+  startTimer();
+}
+
+// Function to display a question and its options
+function displayQuestion() {
+  const currentQuestion = quizQuestions[currentQuestionIndex];
+  const questionText = document.getElementById("question-text");
+  const answerButtons = document.getElementById("answer-buttons");
+
+  // Clear previous question and answer options
+  questionText.innerHTML = "";
+  answerButtons.innerHTML = "";
+
+  // Display the current question
+  questionText.innerHTML = currentQuestion.question;
+
+  // Create answer buttons for each option
+  currentQuestion.options.forEach(option => {
+    const button = document.createElement("button");
+    button.innerText = option;
+    button.classList.add("answer-button");
+    answerButtons.appendChild(button);
+
+    // Add click event listener to check the answer
+    button.addEventListener("click", function() {
+      checkAnswer(option);
+    });
+  });
+}
+
+// Function to check the selected answer
+function checkAnswer(selectedOption) {
+  const currentQuestion = quizQuestions[currentQuestionIndex];
+
+  // Check if the selected answer is correct
+  if (selectedOption === currentQuestion.correctAnswer) {
+    score++;
+  }
+
+  // Move to the next question or end the quiz if all questions are answered
+  currentQuestionIndex++;
+
+  if (currentQuestionIndex < quizQuestions.length) {
+    displayQuestion();
+  } else {
+    endQuiz();
+  }
+}
+
+// Function to start the timer
+function startTimer() {
+  timerInterval = setInterval(function() {
+    timeLeft--;
+
+    // Update the timer text
+    document.getElementById("timer").textContent = timeLeft;
+
+    // End the quiz if time runs out
+    if (timeLeft <= 0) {
+      endQuiz();
+    }
+  }, 1000);
+}
+
+// Function to end the quiz
+function endQuiz() {
+  // Stop the timer
+  clearInterval(timerInterval);
+
+  // Calculate the score percentage
+  const scorePercentage = (score / quizQuestions.length) * 100;
+
+  // Display the final score
+  const questionContainer = document.getElementById("question-container");
+  questionContainer.innerHTML = `
+    <h2>Completed</h2>
+    <h3> <p>Your Score: ${score} out of ${quizQuestions.length}</p>
+    <p>Score Percentage: ${scorePercentage}%</p></h3>
+  `;
+}
+
+// Add event listener to start the quiz when the start button is clicked
+document.getElementById("start-button").addEventListener("click", startQuiz);
+
+  </script>
+</body>
+</html>
